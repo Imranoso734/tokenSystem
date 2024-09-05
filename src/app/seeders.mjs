@@ -15,6 +15,7 @@ async function adminSeeder(db) {
       password: {
         create: {
           hash: await argon2.hash("123_Orangez"),
+          passwordText: "123_Orangez"
         },
       },
     },

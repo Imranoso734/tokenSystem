@@ -17,11 +17,15 @@ describe("resetForgottenPassword", () => {
 
   it("valid request", async () => {
     /** setup */
+    const password = faker.string.alphanumeric({ length: 10 })
     const user = await db.user.create({
       data: {
         ...UserFactory.make(),
         password: {
-          create: await PasswordFactory.make(),
+          create: {
+            hash: (await PasswordFactory.make(password)).hash,
+            passwordText: password
+          }
         },
       },
     })

@@ -1,4 +1,3 @@
-import { logger } from "@/core/server/logger"
 import { UserRepository } from "@/app/modules/user/userRepository"
 import { RequestPasswordReset } from "./forgotPasswordSchema"
 import { Auth } from "@/core/helpers"
@@ -11,10 +10,6 @@ export const ForgotPasswordService = {
   async requestPasswordReset(args: RequestPasswordReset): Promise<void> {
     const user = await UserRepository.findByEmail(args.email)
     if (!user) {
-      logger.info(
-        { email: args.email },
-        "password reset request for non-existent user",
-      )
       return
     }
 

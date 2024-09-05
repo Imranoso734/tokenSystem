@@ -1,6 +1,6 @@
 import process from "node:process"
 import { db } from "@/core/database"
-import { ping } from "@/core/database/helpers"
+// import { ping } from "@/core/database/helpers"
 
 export const HealthCheckService = {
   /**
@@ -8,13 +8,13 @@ export const HealthCheckService = {
    *
    */
   async healthcheck() {
-    const isConnected = await ping(db)
+    // const isConnected = await ping(db)
 
     return {
       uptime: process.uptime(),
       timestamp: Date.now(),
       status: "OK",
-      database: isConnected ? "CONNECTED" : "DISCONNECTED",
+      // database: isConnected ? "CONNECTED" : "DISCONNECTED",
     }
   },
 

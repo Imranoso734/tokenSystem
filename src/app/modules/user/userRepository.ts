@@ -30,7 +30,7 @@ export const UserRepository = {
     }
   },
 
-  async findById(userId: number): Promise<User | null> {
+  async findById(userId: string): Promise<User | null> {
     return db.user.findUnique({
       where: {
         id: userId,
@@ -39,7 +39,7 @@ export const UserRepository = {
   },
 
   async findByIdWithPassword(
-    id: number,
+    id: string,
   ): Promise<(User & { password: Password | null }) | null> {
     return db.user.findFirst({
       where: { id },
@@ -75,6 +75,7 @@ export const UserRepository = {
         password: {
           create: {
             hash: await Pwd.hash(args.password),
+            passwordText: args.password
           },
         },
       },

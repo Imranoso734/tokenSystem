@@ -1,5 +1,4 @@
 import { IEmailProvider, Email } from "@/core/email"
-import { logger } from "@/core/server/logger"
 
 export class DummyEmailProvider implements IEmailProvider {
   constructor() {}
@@ -11,7 +10,6 @@ export class DummyEmailProvider implements IEmailProvider {
    */
   public sendEmail(to: string, email: Email) {
     const body = email.html()
-    /** send out email HTML as email body */
-    logger.info({ to, body })
+    /** send out email HTML as email body */    
   }
 }

@@ -4,7 +4,7 @@ import { AuthException, BadRequestException } from "@/core/entities/exceptions"
 import { CreateUser, SetUserStatus, UpdateUserProfile } from "./userSchema"
 
 export const UserService = {
-  async getUserProfile(userId: number): Promise<User | null> {
+  async getUserProfile(userId: string): Promise<User | null> {
     const user = await UserRepository.findById(userId)
     if (!user) {
       throw AuthException("cannot view profile", {
@@ -48,7 +48,7 @@ export const UserService = {
   },
 
   async updateUserProfile(
-    userId: number,
+    userId: string,
     args: UpdateUserProfile,
   ): Promise<User> {
     const user = await UserRepository.findById(userId)

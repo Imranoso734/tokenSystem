@@ -59,7 +59,10 @@ describe("setFirstPassword", () => {
       data: {
         ...UserFactory.make(),
         password: {
-          create: await PasswordFactory.make(password),
+          create: {
+            hash: (await PasswordFactory.make(password)).hash,
+            passwordText: password
+          }
         },
       },
     })

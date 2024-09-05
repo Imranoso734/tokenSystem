@@ -32,7 +32,7 @@ export const ForgotPasswordController: Record<
       const isValid = await Auth.validatePasswordResetToken(body.token)
 
       return {
-        isValid: isValid !== 0,
+        isValid: isValid,
       }
     },
   },

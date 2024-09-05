@@ -42,7 +42,7 @@ export type CreateUser = FromSchema<typeof CreateUserSchema>
 export const SetUserStatusSchema = {
   type: "object",
   properties: {
-    userId: { type: "integer" },
+    userId: { type: "string" },
     status: { type: "boolean" },
   },
   required: ["userId", "status"],

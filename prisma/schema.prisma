@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URI")
 }
 
@@ -13,18 +13,29 @@ enum UserRole {
 }
 
 model Password {
-  hash   String
-  userId Int    @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  hash         String
+  passwordText String
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String @unique @db.ObjectId
 }
 
 model User {
-  id                 Int             @id @default(autoincrement())
-  email              String          @unique
-  name               String
-  phone              String?
-  mobile             String?
-  password           Password?
-  approved           Boolean         @default(true)
-  role               UserRole        @default(USER)
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  email     String     @unique
+  name      String
+  phone     String?
+  mobile    String?
+  password  Password?
+  approved  Boolean    @default(true)
+  role      UserRole   @default(USER)
+  userQuery UserQuery?
+}
+
+model UserQuery {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String  @unique @db.ObjectId
+  question String?
+  chat     Json
 }

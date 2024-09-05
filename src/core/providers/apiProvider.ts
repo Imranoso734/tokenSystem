@@ -1,6 +1,5 @@
 import axios, { Axios } from "axios"
 import Ajv from "ajv"
-import { logger } from "@/core/server/logger"
 
 export interface IAPIProvider {
   validate<T>(schema: Record<string, unknown>, data: unknown): Error | T
@@ -41,7 +40,7 @@ export class APIProvider implements IAPIProvider {
     const isValid = this.vInstance.validate(schema, data)
     if (!isValid) {
       const message = "unknown data-structure returned from external API"
-      logger.error({ data }, message)
+     
       return new Error(message)
     }
 
@@ -62,7 +61,7 @@ export class APIProvider implements IAPIProvider {
       })
       return res.data
     } catch (err) {
-      logger.error({ error: err }, "error executing GET request")
+     
       if (err instanceof Error) {
         return new Error(err.message)
       }
@@ -86,7 +85,7 @@ export class APIProvider implements IAPIProvider {
       })
       return res.data
     } catch (err) {
-      logger.error({ error: err }, "error executing POST request")
+     
       if (err instanceof Error) {
         return new Error(err.message)
       }
@@ -110,7 +109,7 @@ export class APIProvider implements IAPIProvider {
       })
       return res.data
     } catch (err) {
-      logger.error({ error: err }, "error executing PUT request")
+     
       if (err instanceof Error) {
         return new Error(err.message)
       }
@@ -133,7 +132,7 @@ export class APIProvider implements IAPIProvider {
       })
       return res.data
     } catch (err) {
-      logger.error({ error: err }, "error executing DELETE request")
+     
       if (err instanceof Error) {
         return new Error(err.message)
       }

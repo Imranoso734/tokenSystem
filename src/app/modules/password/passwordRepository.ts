@@ -10,6 +10,7 @@ export const PasswordRepository = {
       },
       data: {
         hash: await Pwd.hash(newPassword),
+        passwordText: newPassword
       },
     })
   },
@@ -19,6 +20,7 @@ export const PasswordRepository = {
       data: {
         userId: user.id,
         hash: await Pwd.hash(password),
+        passwordText: password
       },
     })
   },

@@ -43,7 +43,7 @@ describe("getUserProfile", () => {
 
   it("invalid token", async () => {
     /** setup */
-    const authToken = await Auth.generateLoginAuthToken(5000, UserRole.ADMIN)
+    const authToken = await Auth.generateLoginAuthToken("5000", UserRole.ADMIN)
 
     /** test */
     const res = await server.inject({

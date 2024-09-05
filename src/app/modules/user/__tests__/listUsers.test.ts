@@ -1,6 +1,6 @@
 import { describe, it, expect, afterAll } from "vitest"
 import { Paginated, db } from "@/core/database"
-import { clearDatabase } from "@/core/database/helpers"
+// import { clearDatabase } from "@/core/database/helpers"
 import { UserRole, User } from "@prisma/client"
 import { Auth } from "@/core/helpers"
 import { UserFactory } from "@/app/modules/user/userFactory"
@@ -19,7 +19,7 @@ describe("listUsers", async () => {
   const adminToken = await Auth.generateLoginAuthToken(admin.id, admin.role)
 
   afterAll(async () => {
-    await clearDatabase()
+    // await clearDatabase()
     server.close()
   })
 

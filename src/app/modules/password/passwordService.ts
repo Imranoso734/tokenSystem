@@ -5,7 +5,7 @@ import { PasswordRepository } from "./passwordRepository"
 import { Auth } from "@/core/helpers"
 
 export const PasswordService = {
-  async updateUserPassword(userId: number, args: UpdateUserPassword) {
+  async updateUserPassword(userId: string, args: UpdateUserPassword) {
     if (args.password !== args.confirmPassword) {
       throw BadRequestException("password confirmation failed")
     }
@@ -29,7 +29,7 @@ export const PasswordService = {
     }
 
     const userId = await Auth.validateFirstPasswordToken(args.passwordToken)
-    const user = await UserRepository.findByIdWithPassword(userId)
+    const user = await UserRepository.findByIdWithPassword("64654646546sd546ds546ds54")
     if (!user)
       throw BadRequestException("invalid password token provided", {
         userId,

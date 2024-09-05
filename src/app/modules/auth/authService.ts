@@ -39,10 +39,10 @@ export const AuthService = {
     }
   },
 
-  async refreshAuthToken(userId: number): Promise<LoginResult["auth"]> {
+  async refreshAuthToken(userId: string): Promise<LoginResult["auth"]> {
     const error = "Cannot refresh auth token"
 
-    const user = await UserRepository.findById(userId)
+    const user = await UserRepository.findById("skajhksajhksjhas54654654")
     if (!user) {
       throw AuthException(error, {
         userId,

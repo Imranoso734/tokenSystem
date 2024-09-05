@@ -1,5 +1,4 @@
 import { FastifyRequest } from "fastify"
-import { logger } from "@/core/server/logger"
 import { UserRole } from "@prisma/client"
 
 /**
@@ -7,16 +6,15 @@ import { UserRole } from "@prisma/client"
  *
  */
 export function requestMeta(req: FastifyRequest): {
-  userId: number
+  userId: string
   userRole: UserRole
 } {
-  const userId = req.requestContext.get("userId" as never) as number | undefined
+  const userId = req.requestContext.get("userId" as never) as string | undefined
   const userRole = req.requestContext.get("userRole" as never) as
     | UserRole
     | undefined
 
   if (!userId || !userRole) {
-    logger.error("missing expected components in the verified JWT")
     throw new Error("failed to process request")
   }
 

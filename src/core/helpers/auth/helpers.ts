@@ -10,8 +10,8 @@ type TokenResult = { token: string; expiry: number }
 
 export function generateGeneralToken(
   type: keyof typeof authConfig.tokens,
-): (userId: number) => Promise<TokenResult> {
-  return async (userId: number): Promise<TokenResult> => {
+): (userId: string) => Promise<TokenResult> {
+  return async (userId: string): Promise<TokenResult> => {
     const { scope, expiry } = authConfig.tokens[type]
     const claims = {
       sub: userId,
@@ -29,8 +29,8 @@ export function generateGeneralToken(
  */
 export function generateLoginToken(
   type: keyof typeof authConfig.tokens,
-): (userId: number, userRole: UserRole) => Promise<TokenResult> {
-  return async (userId: number, userRole: UserRole): Promise<TokenResult> => {
+): (userId: string, userRole: UserRole) => Promise<TokenResult> {
+  return async (userId: string, userRole: UserRole): Promise<TokenResult> => {
     const tokenConfig = authConfig.tokens[type]
 
     const claims = {
@@ -45,11 +45,11 @@ export function generateLoginToken(
 
 export function validateGeneralToken(
   type: keyof typeof authConfig.tokens,
-): (token: string) => Promise<number> {
-  return async (token): Promise<number> => {
+): (token: string) => Promise<string> {
+  return async (token): Promise<string> => {
     const jwtPayload = await JWT.validate(authConfig.jwt.secret, token)
 
-    const result = jwtPayload as { sub?: number; scope?: string }
+    const result = jwtPayload as { sub?: string; scope?: string }
     const { scope } = authConfig.tokens[type]
 
     if (!result || !result.sub || !result.scope || result.scope !== scope) {
