@@ -1,6 +1,6 @@
 import { MessageHandlers } from "@/core/server/plugins/SocketRoutesPlugin/index.types"
 import { EchoMessage } from "./Echo"
-import { chatWithGPT, chatWithGPTTesting, completeQueryWithGPT } from "../modules/chat/liveChat";
+import { chatWithGPT, chatWithGPTTesting } from "../modules/chat/liveChat";
 // import { DeliveryStartMessage } from "./DeliveryStart"
 // import { DriverDeliveryStartMessage } from "./DriverDeliveryStart"
 // import { DeliveryTrackMessage } from "./DeliveryTrack"
