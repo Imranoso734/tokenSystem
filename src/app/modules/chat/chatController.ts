@@ -20,7 +20,7 @@ export const ChatControllerClass = {
       throw new Error("User not found")
     }
 
-    const history: any = await db.userQuery.findMany({ where: { userId: userId } })
+    const history: any = ""
     const chatHistory = history.map((chat: any) => chat.chat)
     return chatHistory
   }

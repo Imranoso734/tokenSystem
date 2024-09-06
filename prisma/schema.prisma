@@ -10,6 +10,9 @@ generator client {
 enum UserRole {
   ADMIN
   USER
+  AGENT
+  SHOPKEEPER
+  HELPER
 }
 
 model Password {
@@ -21,21 +24,47 @@ model Password {
 }
 
 model User {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  email     String     @unique
-  name      String
-  phone     String?
-  mobile    String?
-  password  Password?
-  approved  Boolean    @default(true)
-  role      UserRole   @default(USER)
-  userQuery UserQuery?
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  email       String       @unique
+  name        String
+  phone       String?
+  mobile      String?
+  password    Password?
+  approved    Boolean      @default(true)
+  role        UserRole     @default(USER)
+  shop        Shop?
+  tokens      Token?
+  allocatShop AllocatShop?
 }
 
-model UserQuery {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  user     User    @relation(fields: [userId], references: [id])
-  userId   String  @unique @db.ObjectId
-  question String?
-  chat     Json
+model AllocatShop {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @unique @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
+}
+
+model Shop {
+  id       String       @id @default(auto()) @map("_id") @db.ObjectId
+  user     User         @relation(fields: [userId], references: [id])
+  userId   String       @unique @db.ObjectId
+  name     String
+  location String
+  tokens   Token?
+  shopUser AllocatShop?
+}
+
+model Token {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  shop            Shop    @relation(fields: [shopId], references: [id])
+  shopId          String  @unique @db.ObjectId
+  user            User    @relation(fields: [userId], references: [id])
+  userId          String  @unique @db.ObjectId
+  cnic            String?
+  name            String?
+  tokenNumber     String
+  getCommission   String?
+  agentCommission String?
+  highPriority    Boolean @default(false)
 }

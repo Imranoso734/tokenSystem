@@ -7,6 +7,8 @@ import { UserRouter } from "./modules/user/userRouter"
 import { RouteOptions } from "fastify"
 import { serverConfig } from "./config"
 import ChatRouter from "./modules/chat"
+import AdminRouter from "./modules/admin"
+import ShoperRouter from "./modules/shoper"
 
 /**
  * Register all module routers here
@@ -26,5 +28,13 @@ export const routers = new Map<string, FastifyPlugin>([
  *
  */
 export const routes2: RouteOptions[] = [
-  ChatRouter.chat
+  AdminRouter.createShop,
+  AdminRouter.getAllShops,
+  AdminRouter.singleShop,
+  AdminRouter.updateShop,
+  ShoperRouter.createAgent,
+  ShoperRouter.getAllAgents,
+  ShoperRouter.singleAgent,
+  ShoperRouter.updateAgent,
+
 ]

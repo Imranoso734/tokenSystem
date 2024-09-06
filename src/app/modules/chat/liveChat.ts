@@ -44,9 +44,6 @@ export const chatWithGPTTesting: MessageHandler = async (socket, payload) => {
     const resp = ""//await PerplexityAIService.generateQuery(body.text)
 
 
-    // const resp = await db.userQuery.findMany()
-
-
 
     socket.send({ message: "Assistant", reponse: resp })
 
