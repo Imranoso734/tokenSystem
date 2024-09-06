@@ -11,7 +11,6 @@ export const ShoperControllerClass = {
     // }
     // return { headers } // Return the headers object
   })(),
-
   async getSingleAgent(agentId: string, shopId: string) {
     const agent = await db.user.findUnique({
       where: {
@@ -45,7 +44,6 @@ export const ShoperControllerClass = {
     })
     return agent
   },
-
   async CreateNewAgent(agr: Body, shopId: string) {
 
     const email = await db.user.findUnique({
@@ -84,7 +82,6 @@ export const ShoperControllerClass = {
     })
     return shop
   },
-
   async updateAgent(agr: Body, agentId: string) {
 
     const user = await db.user.findUnique({
