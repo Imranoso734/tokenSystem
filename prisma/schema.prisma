@@ -7,6 +7,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Day {
+  SUN
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+}
+
 enum UserRole {
   ADMIN
   USER
@@ -19,7 +29,7 @@ model Password {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   hash         String
   passwordText String
-  user         User   @relation(fields: [userId], references: [id])
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String @unique @db.ObjectId
 }
 
@@ -36,53 +46,75 @@ model User {
   tokens      Token?
   allocatShop AllocatShop?
   tokenLogs   TokenLogs?
+  created_at  DateTime?
 }
 
 model AllocatShop {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  shop   Shop   @relation(fields: [shopId], references: [id])
+  shop   Shop   @relation(fields: [shopId], references: [id], onDelete: Cascade)
   shopId String @unique @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId
 }
 
 model Shop {
-  id       String       @id @default(auto()) @map("_id") @db.ObjectId
-  user     User         @relation(fields: [userId], references: [id])
-  userId   String       @unique @db.ObjectId
-  name     String
-  location String
-  tokens   Token?
-  shopUser AllocatShop?
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String          @unique @db.ObjectId
+  name           String
+  location       String
+  tokens         Token?
+  shopUser       AllocatShop?
+  ReservedTokens ReservedTokens?
 }
 
 model Token {
-  id              String     @id @default(auto()) @map("_id") @db.ObjectId
-  shop            Shop       @relation(fields: [shopId], references: [id])
-  shopId          String     @unique @db.ObjectId
-  user            User       @relation(fields: [userId], references: [id])
-  userId          String     @unique @db.ObjectId
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  shop            Shop        @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId          String      @unique @db.ObjectId
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String      @unique @db.ObjectId
   cnic            String?
   name            String?
+  surName         String?
+  dateOfBirth     String?
+  issueCnic       String?
+  expiryCnic      String?
+  phoneNumber     String?
+  address         String?
   tokenNumber     String
+  tokenNumberInt  Int
   getCommission   String?
   agentCommission String?
-  highPriority    Boolean    @default(false)
-  TokenLogs       TokenLogs?
+  status          TokenStatus @default(ACTIVE)
+  tokenLogs       TokenLogs[]
 }
 
 enum TokenStatus {
   ACTIVE
   HIGH_PRIORITY
   COMPLETE
+  NEED_BASE
+  FRIEND_FAMILY
 }
 
 model TokenLogs {
-  id       String      @id @default(auto()) @map("_id") @db.ObjectId
-  user     User        @relation(fields: [userId], references: [id])
-  userId   String      @unique @db.ObjectId
-  token    Token       @relation(fields: [tokenId], references: [id])
-  tokenId  String      @unique @db.ObjectId
-  status   TokenStatus @default(ACTIVE)
-  dateTime DateTime?
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String      @unique @db.ObjectId
+  token      Token       @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  tokenId    String      @unique @db.ObjectId
+  status     TokenStatus @default(ACTIVE)
+  date_at    String
+  time_at    String
+  created_at DateTime
+}
+
+model ReservedTokens {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  shop       Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId     String   @unique @db.ObjectId
+  reserved   Int
+  used       Int?
+  created_at DateTime
 }

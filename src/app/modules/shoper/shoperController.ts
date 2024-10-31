@@ -2,6 +2,7 @@ import { db } from "@/core/database"
 import { UserRole } from "@prisma/client"
 import { Password as Pwd } from "@/core/helpers"
 import { Body, params } from "./shoper.schema"
+import { Dates } from "@/core/helpers/Dates"
 
 
 export const ShoperControllerClass = {
@@ -59,6 +60,7 @@ export const ShoperControllerClass = {
         email: agr.email,
         mobile: agr.mobile,
         role: UserRole.AGENT,
+        created_at: await Dates.getDateTime(),
         password: agr.password && agr.password.length > 0 ? {
           create: {
             hash: await Pwd.hash(agr.password),

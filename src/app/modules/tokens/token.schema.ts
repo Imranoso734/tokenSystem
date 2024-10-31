@@ -1,30 +1,75 @@
+import { Shop } from './../../../../node_modules/.prisma/client/index.d';
 import { FromSchema } from "json-schema-to-ts"
 
-export const bodySchema = {
+export const tokenBodySchema = {
     type: "object",
     properties: {
-        siteId: { type: "integer" },
-        durationHours: { type: "integer", minimum: 0, maximum: 23 },
-        durationMinutes: { type: "integer", minimum: 0, maximum: 59 },
+        cnic: { type: "string" },
+        name: { type: "string" },
+        shopId: { type: "string" },
     },
-    required: [
-        "siteId",
-        "durationHours",
-    ],
+    required: ["shopId"],
     additionalProperties: false,
 } as const
 
-export type Body = FromSchema<typeof bodySchema>
+export type tokenBody = FromSchema<typeof tokenBodySchema>
 
 
-export const paramsSchema = {
+export const tokenprocessSchema = {
     type: "object",
     properties: {
-        userId: { type: "string" },
+        shopId: { type: "string" },
+        cnic: { type: "string" },
+        name: { type: "string" },
+        surName: { type: "string" },
+        dateOfBirth: { type: "string" },
+        issueCnic: { type: "string" },
+        expiryCnic: { type: "string" },
+        phoneNumber: { type: "string" },
+        address: { type: "string" }
     },
-    required: ["userId"],
+    required: ["shopId"],
+    additionalProperties: false,
+} as const;
+
+export type TokenProcessBody = FromSchema<typeof tokenprocessSchema>;
+
+
+
+export const tokenNumberSchema = {
+    type: "object",
+    properties: {
+        tokenNumber: { type: "integer" },
+    },
+    required: ["tokenNumber"],
     additionalProperties: false,
 } as const
 
-export type params = FromSchema<typeof paramsSchema>
+export type tokenNumber = FromSchema<typeof tokenNumberSchema>
+
+
+
+export const tokenNumberWithShopSchema = {
+    type: "object",
+    properties: {
+        tokenNumber: { type: "integer" },
+        shopId: { type: "string" },
+    },
+    required: ["tokenNumber"],
+    additionalProperties: false,
+} as const
+
+export type tokenNumberWithShop = FromSchema<typeof tokenNumberWithShopSchema>
+
+
+export const shopIdSchema = {
+    type: "object",
+    properties: {
+        shopId: { type: "string" },
+    },
+    required: ["shopId"],
+    additionalProperties: false,
+} as const
+
+export type ShopId = FromSchema<typeof shopIdSchema>
 

@@ -9,6 +9,7 @@ import { serverConfig } from "./config"
 import ChatRouter from "./modules/chat"
 import AdminRouter from "./modules/admin"
 import ShoperRouter from "./modules/shoper"
+import tokenRouter from "./modules/tokens"
 
 /**
  * Register all module routers here
@@ -36,5 +37,12 @@ export const routes2: RouteOptions[] = [
   ShoperRouter.getAllAgents,
   ShoperRouter.singleAgent,
   ShoperRouter.updateAgent,
-
+  tokenRouter.createToken,
+  tokenRouter.deleteTokens,
+  tokenRouter.processOnToken,
+  tokenRouter.listOfTokensByPriority,
+  tokenRouter.getSingleToken,
+  tokenRouter.listOfTokensByActiveOfCurrentDate,
+  tokenRouter.setTokenHighPriority,
+  tokenRouter.addReservedToken
 ]

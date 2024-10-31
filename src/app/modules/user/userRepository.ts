@@ -3,6 +3,7 @@ import { db, Paginated } from "@/core/database"
 import { Password, User, UserRole } from "@prisma/client"
 import { UpdateUserProfile, CreateUser } from "./userSchema"
 import { Password as Pwd } from "@/core/helpers"
+import { Dates } from "@/core/helpers/Dates"
 
 export const UserRepository = {
   async listUsers(
@@ -62,6 +63,12 @@ export const UserRepository = {
       where: { email },
       include: {
         password: true,
+        shop: true,
+        allocatShop: {
+          select: {
+            shop: true
+          }
+        },
       },
     })
   },
@@ -71,13 +78,14 @@ export const UserRepository = {
       data: {
         email: args.email,
         name: args.name,
+        created_at: await Dates.getDateTime(),
         role,
         password: {
           create: {
             hash: await Pwd.hash(args.password),
             passwordText: args.password
           },
-        },
+        }
       },
     })
   },

@@ -1,7 +1,23 @@
-import { chat } from "./tokenMethods"
+import {
+    createToken,
+    deleteTokens,
+    getSingleToken,
+    listOfTokensByPriority,
+    processOnToken,
+    listOfTokensByActiveOfCurrentDate,
+    setTokenHighPriority,
+    addReservedToken
+} from "./tokenMethods"
 
-const ChatRouter = {
-    chat
+const tokenRouter = {
+    createToken,
+    deleteTokens,
+    processOnToken,
+    listOfTokensByPriority,
+    getSingleToken,
+    listOfTokensByActiveOfCurrentDate,
+    setTokenHighPriority,
+    addReservedToken
 }
 
-export default ChatRouter
+export default tokenRouter
