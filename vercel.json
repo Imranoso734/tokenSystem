@@ -19,12 +19,6 @@
         "FROM_EMAIL": "@from_email",
         "PORT": "5000"
     },
-    "functions": {
-        "build/index.js": {
-            "memory": 1024,
-            "maxDuration": 10
-        }
-    },
     "build": {
         "env": {
             "PRISMA_CLIENT_ENGINE_TYPE": "binary"
