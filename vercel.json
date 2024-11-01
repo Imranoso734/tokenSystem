@@ -13,7 +13,6 @@
         }
     ],
     "env": {
-        "FRONT_END_URL": "@front_end_url",
         "DATABASE_URI": "@database_uri",
         "JWT_SECRET": "@jwt_secret",
         "FROM_EMAIL": "@from_email",
