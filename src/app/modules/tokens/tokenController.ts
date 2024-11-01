@@ -3,6 +3,7 @@ import { ShopId, tokenBody, tokenNumber, TokenProcessBody } from "./token.schema
 import { TokenStatus } from "@prisma/client"
 import { Dates } from "@/core/helpers/Dates"
 import { Time } from "@/core/helpers/Time"
+import { assert } from "node:console"
 
 
 export const TokenControllerClass = {
@@ -38,20 +39,11 @@ export const TokenControllerClass = {
     }
 
     const token = await db.token.findFirst({
-      where: { shopId: body.shopId },
+      where: { shopId: body.shopId, created_at: Dates.currentDate() },
       orderBy: { tokenNumberInt: 'desc' },
     })
 
     let nextTokenNumberInt = token ? token.tokenNumberInt + 1 : 1
-
-
-    // Increment the last token number by 1, or start at 1 if none exist
-    // const reservedTokens = await db.reservedTokens.findUnique({ where: { shopId: body.shopId, created_at: Dates.currentDate() } })
-    // const reserved = reservedTokens?.reserved ?? 0
-    // console.log(reservedTokens);
-    // if (reservedTokens && reserved >= nextTokenNumberInt) {
-    //   nextTokenNumberInt = reserved + nextTokenNumberInt
-    // }
 
 
     const nameInitials = this.getInitials(user.name)
@@ -65,6 +57,7 @@ export const TokenControllerClass = {
         tokenNumberInt: nextTokenNumberInt,
         cnic: body.cnic,
         name: body.name,
+        created_at: Dates.currentDate(),
         tokenLogs: {
           create: {
             userId: user.id,
@@ -219,8 +212,8 @@ export const TokenControllerClass = {
    */
   async setTokenStatusHighPriority(tokenNumber: number, shopId: string, userId: string) {
 
-    const user = await db.user.findUnique({ where: { id: userId, }, })
-    const shop = await db.shop.findUnique({ where: { id: shopId }, })
+    const user = await db.user.findUnique({ where: { id: userId, } })
+    const shop = await db.shop.findUnique({ where: { id: shopId } })
 
     if (!user) {
       throw Error("cannot find user")
@@ -230,19 +223,35 @@ export const TokenControllerClass = {
       throw Error("shop not found")
     }
 
-    const token = await db.token.findFirst({ where: { shopId: shopId, tokenNumberInt: tokenNumber } })
+    const token = await db.token.findFirst({ where: { shopId: shopId, tokenNumberInt: tokenNumber, created_at: Dates.currentDate() } })
     if (!token) {
       throw Error("cannot find token")
     }
 
+    if (token.isSendRequestForHigh) {
+      throw Error("token already sent for high priority")
+    }
+
+    const ttoken = await db.token.update({ where: { id: token.id }, data: { isSendRequestForHigh: true } })
+
+    const reservedToken = await db.token.findFirst({
+      where: {
+        shopId: shopId,
+        isResvered: true,
+        created_at: Dates.currentDate()
+      },
+      orderBy: { tokenNumberInt: 'asc' },
+    })
+
     const { hours, minutes } = Time.currentTime()
 
-    const setPriority = await db.token.update({
+    const assignNewToken = await db.token.update({
       where: {
-        id: token.id
+        id: reservedToken?.id
       },
       data: {
         status: TokenStatus.HIGH_PRIORITY,
+        isResvered: false,
         tokenLogs: {
           create: {
             userId: userId,
@@ -255,7 +264,7 @@ export const TokenControllerClass = {
       }
     })
 
-    return { tokenId: token.tokenNumberInt, setPriority }
+    return { token: assignNewToken.tokenNumberInt }
 
   },
 
@@ -287,7 +296,7 @@ export const TokenControllerClass = {
    * @param userId The ID of the user to associate with the reserved token.
    */
 
-  async createReservedToken(shopId: string, userId: string) {
+  async createReservedToken(shopId: string, noOftokens: number, userId: string) {
     const user = await db.user.findUnique({ where: { id: userId, }, })
     const shop = await db.shop.findUnique({ where: { id: shopId }, })
 
@@ -299,15 +308,50 @@ export const TokenControllerClass = {
       throw Error("shop not found")
     }
 
-    const token = await db.reservedTokens.create({
-      data: {
-        shopId: shopId,
-        reserved: 50,
-        created_at: Dates.currentDate()
-      }
-    })
 
-    return token
+    let newToken: any = []
+    for (let index = 1; index <= noOftokens; index++) {
+
+      const token = await db.token.findFirst({
+        where: { shopId: shopId, created_at: Dates.currentDate() },
+        orderBy: { tokenNumberInt: 'desc' },
+      })
+
+      const nextTokenNumberInt = token ? token.tokenNumberInt + 1 : 1
+
+      const nameInitials = this.getInitials(user.name)
+      const tokenNumber = `SM-${nameInitials}-${nextTokenNumberInt}`
+      const { hours, minutes } = Time.currentTime()
+      const rrNewToken = await db.token.create({
+        data: {
+          shopId: shopId,
+          userId: user.id,
+          tokenNumber: tokenNumber,
+          tokenNumberInt: nextTokenNumberInt,
+          isResvered: true,
+          created_at: Dates.currentDate(),
+          tokenLogs: {
+            create: {
+              userId: user.id,
+              status: TokenStatus.ACTIVE,
+              date_at: Dates.currentDateString(),
+              time_at: `${hours}:${minutes}`,
+              created_at: await Dates.getDateTime(),
+
+            }
+          }
+        },
+      })
+
+      newToken.push(rrNewToken.tokenNumberInt)
+
+    }
+
+
+
+
+
+    return newToken
   },
 
 

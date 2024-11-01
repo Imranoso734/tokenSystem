@@ -11,6 +11,7 @@ export const Dates = {
    * @returns The only current date in the Pakistan timezone, set to midnight.
    */
   currentDate(): Date {
+    // 2022-01-01T00:00:00.000Z
     const date = new Date();
     const PKT_OFFSET = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
 

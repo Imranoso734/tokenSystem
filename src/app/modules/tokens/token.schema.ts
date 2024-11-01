@@ -1,3 +1,4 @@
+import def from 'ajv/dist/vocabularies/discriminator';
 import { Shop } from './../../../../node_modules/.prisma/client/index.d';
 import { FromSchema } from "json-schema-to-ts"
 
@@ -66,6 +67,7 @@ export const shopIdSchema = {
     type: "object",
     properties: {
         shopId: { type: "string" },
+        noOftokens: { type: "integer", default: 10 },
     },
     required: ["shopId"],
     additionalProperties: false,

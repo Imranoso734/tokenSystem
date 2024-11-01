@@ -65,29 +65,31 @@ model Shop {
   location       String
   tokens         Token?
   shopUser       AllocatShop?
-  ReservedTokens ReservedTokens?
 }
 
 model Token {
-  id              String      @id @default(auto()) @map("_id") @db.ObjectId
-  shop            Shop        @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  shopId          String      @unique @db.ObjectId
-  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          String      @unique @db.ObjectId
-  cnic            String?
-  name            String?
-  surName         String?
-  dateOfBirth     String?
-  issueCnic       String?
-  expiryCnic      String?
-  phoneNumber     String?
-  address         String?
-  tokenNumber     String
-  tokenNumberInt  Int
-  getCommission   String?
-  agentCommission String?
-  status          TokenStatus @default(ACTIVE)
-  tokenLogs       TokenLogs[]
+  id                   String      @id @default(auto()) @map("_id") @db.ObjectId
+  shop                 Shop        @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId               String      @unique @db.ObjectId
+  user                 User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String      @unique @db.ObjectId
+  cnic                 String?
+  name                 String?
+  surName              String?
+  dateOfBirth          String?
+  issueCnic            String?
+  expiryCnic           String?
+  phoneNumber          String?
+  address              String?
+  tokenNumber          String
+  tokenNumberInt       Int
+  getCommission        String?
+  agentCommission      String?
+  status               TokenStatus @default(ACTIVE)
+  isResvered           Boolean     @default(false)
+  isSendRequestForHigh Boolean     @default(false)
+  tokenLogs            TokenLogs[]
+  created_at           DateTime
 }
 
 enum TokenStatus {
@@ -96,6 +98,7 @@ enum TokenStatus {
   COMPLETE
   NEED_BASE
   FRIEND_FAMILY
+  LOW_PRIORITY
 }
 
 model TokenLogs {
@@ -107,14 +110,5 @@ model TokenLogs {
   status     TokenStatus @default(ACTIVE)
   date_at    String
   time_at    String
-  created_at DateTime
-}
-
-model ReservedTokens {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  shop       Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  shopId     String   @unique @db.ObjectId
-  reserved   Int
-  used       Int?
   created_at DateTime
 }

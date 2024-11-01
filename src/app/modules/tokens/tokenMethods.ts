@@ -173,14 +173,12 @@ export const setTokenHighPriority: RouteOptions = {
  *
 */
 export const addReservedToken: RouteOptions = {
-  url: "/add-reserved-token/:shopId",
+  url: "/add-reserved-token/:shopId/:noOftokens",
   method: "GET",
   preValidation: [
     validateToken,
     hasRole(
-      UserRole.SHOPKEEPER,
-      UserRole.HELPER,
-      UserRole.AGENT
+      UserRole.SHOPKEEPER
     ),
   ],
   schema: {
@@ -188,8 +186,8 @@ export const addReservedToken: RouteOptions = {
   },
   handler: async (req, reply) => {
     const { userId } = requestMeta(req)
-    const { shopId } = req.params as ShopId
-    const token = await TokenControllerClass.createReservedToken(shopId as string, userId)
+    const { shopId, noOftokens } = req.params as ShopId
+    const token = await TokenControllerClass.createReservedToken(shopId as string, noOftokens as number, userId)
     reply.send(token)
   }
 }
