@@ -1,5 +1,5 @@
 import { env } from "@/core/helpers"
-const frontendURL = env("FRONT_END_URL")
+const frontendURL = "http://localhost:3000/"
 
 export const appConfig = {
   appName: "Node API",
