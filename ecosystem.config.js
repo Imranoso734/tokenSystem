@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "dms_backend",
+      name: "tokenSystem_backend",
       instances: 0,
       exec_mode: "cluster",
       script: "./build/index.js"
