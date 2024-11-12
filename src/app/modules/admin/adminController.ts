@@ -91,11 +91,10 @@ export const ShopControllerClass = {
 
     const user = await db.user.findUnique({
       where: {
-        id: shopId
+        email: agr.email
       }
     })
-    if (!user) throw new Error("user not found")
-    if (user.email === agr.email) throw new Error("Email already taken")
+    if (user?.email === agr.email) throw new Error("Email already taken")
 
     const shop = await db.shop.update({
       where: {
