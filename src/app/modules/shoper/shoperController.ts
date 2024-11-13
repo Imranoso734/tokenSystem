@@ -92,7 +92,7 @@ export const ShoperControllerClass = {
       }
     })
     if (!user) throw new Error("Agent not found")
-    if (user.email === agr.email) throw new Error("Email already taken")
+    // if (user.email === agr.email) throw new Error("Email already taken")
 
 
     const agent = await db.user.update({
