@@ -86,9 +86,9 @@ export const TokenControllerClass = {
    * @throws Error if the shop is not found
    * @throws Error if the token is already processed
    */
-  async processOnTokenAllocated(tokenNumber: number, userId: string, body: TokenProcessBody) {
+  async processOnTokenAllocated(tokenNumber: string, userId: string, body: TokenProcessBody) {
 
-    const findToken = await db.token.findFirst({ where: { tokenNumberInt: tokenNumber }, include: { tokenLogs: true } })
+    const findToken = await db.token.findFirst({ where: { id: tokenNumber }, include: { tokenLogs: true } })
 
     if (!findToken) {
       throw Error("cannot find token")
@@ -108,7 +108,7 @@ export const TokenControllerClass = {
     const token = await db.token.update({
       where: {
         shopId: body.shopId,
-        tokenNumberInt: tokenNumber
+        id: tokenNumber
       },
       data: {
         cnic: body.cnic,
@@ -148,10 +148,10 @@ export const TokenControllerClass = {
    * @param tokenNumber The token number to find the token.
    * @returns The found token.
    */
-  async getOneToken(tokenNumber: number) {
+  async getOneToken(tokenNumber: string) {
     const token = await db.token.findFirst({
       where: {
-        tokenNumberInt: tokenNumber
+        id: tokenNumber
       },
       include: {
         tokenLogs: {

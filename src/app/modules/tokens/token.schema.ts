@@ -40,7 +40,7 @@ export type TokenProcessBody = FromSchema<typeof tokenprocessSchema>;
 export const tokenNumberSchema = {
     type: "object",
     properties: {
-        tokenNumber: { type: "integer" },
+        tokenNumber: { type: "string" },
     },
     required: ["tokenNumber"],
     additionalProperties: false,
