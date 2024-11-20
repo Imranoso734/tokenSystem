@@ -210,7 +210,7 @@ export const TokenControllerClass = {
    * @param userId The ID of the user who is setting the status.
   
    */
-  async setTokenStatusHighPriority(tokenNumber: number, shopId: string, userId: string) {
+  async setTokenStatusHighPriority(tokenNumber: string, shopId: string, userId: string) {
 
     const user = await db.user.findUnique({ where: { id: userId, } })
     const shop = await db.shop.findUnique({ where: { id: shopId } })
@@ -223,7 +223,7 @@ export const TokenControllerClass = {
       throw Error("shop not found")
     }
 
-    const token = await db.token.findFirst({ where: { shopId: shopId, tokenNumberInt: tokenNumber, created_at: Dates.currentDate() } })
+    const token = await db.token.findFirst({ where: { shopId: shopId, id: tokenNumber, created_at: Dates.currentDate() } })
     if (!token) {
       throw Error("cannot find token")
     }

@@ -53,7 +53,7 @@ export type tokenNumber = FromSchema<typeof tokenNumberSchema>
 export const tokenNumberWithShopSchema = {
     type: "object",
     properties: {
-        tokenNumber: { type: "integer" },
+        tokenNumber: { type: "string" },
         shopId: { type: "string" },
     },
     required: ["tokenNumber"],
