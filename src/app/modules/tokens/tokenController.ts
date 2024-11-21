@@ -223,7 +223,7 @@ export const TokenControllerClass = {
       throw Error("shop not found")
     }
 
-    const token = await db.token.findFirst({ where: { shopId: shopId, id: tokenNumber } })
+    const token = await db.token.findFirst({ where: { shopId: shopId, id: tokenNumber, isResvered: false } })
     if (!token) {
       throw Error("cannot find token")
     }
