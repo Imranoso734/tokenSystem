@@ -223,7 +223,7 @@ export const TokenControllerClass = {
       throw Error("shop not found")
     }
 
-    const token = await db.token.findFirst({ where: { shopId: shopId, id: tokenNumber, created_at: Dates.currentDate() } })
+    const token = await db.token.findFirst({ where: { shopId: shopId, id: tokenNumber } })
     if (!token) {
       throw Error("cannot find token")
     }
@@ -232,7 +232,7 @@ export const TokenControllerClass = {
       throw Error("token already sent for high priority")
     }
 
-    const ttoken = await db.token.update({ where: { id: token.id }, data: { isSendRequestForHigh: true } })
+    // const ttoken = await db.token.update({ where: { id: token.id }, data: { isSendRequestForHigh: true } })
 
     const reservedToken = await db.token.findFirst({
       where: {
@@ -242,6 +242,10 @@ export const TokenControllerClass = {
       },
       orderBy: { tokenNumberInt: 'asc' },
     })
+
+    if (!reservedToken) { 
+      throw Error("cannot find reserved token day")
+    }
 
     const { hours, minutes } = Time.currentTime()
 
