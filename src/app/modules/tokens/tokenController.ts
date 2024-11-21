@@ -191,10 +191,46 @@ export const TokenControllerClass = {
     const tokens = await db.token.findMany({
       where: {
         shopId: shopId,
-        status: TokenStatus.ACTIVE
+        status: TokenStatus.ACTIVE,
+        created_at: Dates.currentDate()
       },
       include: {
         tokenLogs: true
+      }
+    })
+
+
+    return tokens
+
+  },
+
+  /**
+   * Get list of tokens for shop with status that is ACTIVE
+   * and with today date.
+   * @param shopId The ID of the shop to get the tokens for.
+   * @returns The found tokens.
+   */
+  async listOfAllTokens(shopId: string) {
+
+    const shop = await db.shop.findUnique({ where: { id: shopId }, })
+    if (!shop) {
+      throw Error("shop not found")
+    }
+
+    const tokens = await db.token.findMany({
+      where: {
+        shopId: shopId,
+        created_at: Dates.currentDate()
+      },
+      include: {
+        tokenLogs: {
+          include: {
+            user: true
+          }
+        }
+      },
+      orderBy: {
+        created_at: "desc"
       }
     })
 
@@ -243,7 +279,7 @@ export const TokenControllerClass = {
       orderBy: { tokenNumberInt: 'asc' },
     })
 
-    if (!reservedToken) { 
+    if (!reservedToken) {
       throw Error("cannot find reserved token day")
     }
 
@@ -282,7 +318,8 @@ export const TokenControllerClass = {
     const tokens = await db.token.findMany({
       where: {
         shopId: shopId,
-        status: TokenStatus.HIGH_PRIORITY
+        status: TokenStatus.HIGH_PRIORITY,
+        created_at: Dates.currentDate()
       },
       include: {
         tokenLogs: true

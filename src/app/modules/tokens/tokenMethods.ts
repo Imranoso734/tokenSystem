@@ -114,6 +114,32 @@ export const listOfTokensByActiveOfCurrentDate: RouteOptions = {
   }
 }
 
+/**
+ * Get list of tokens for shop with current date and with status ACTIVE
+ *
+*/
+export const listOfAllTokens: RouteOptions = {
+  url: "/token/:shopId/all",
+  method: "GET",
+  preValidation: [
+    validateToken,
+    hasRole(
+      UserRole.SHOPKEEPER,
+      UserRole.AGENT,
+      UserRole.HELPER
+    ),
+  ],
+  schema: {
+    params: shopIdSchema,
+  },
+  handler: async (req, reply) => {
+    const { userId } = requestMeta(req)
+    const { shopId } = req.params as ShopId
+    const token = await TokenControllerClass.listOfAllTokens(shopId)
+    reply.send(token)
+  }
+}
+
 
 /**
  * Get list of tokens for shop with high priority

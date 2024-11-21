@@ -44,5 +44,6 @@ export const routes2: RouteOptions[] = [
   tokenRouter.getSingleToken,
   tokenRouter.listOfTokensByActiveOfCurrentDate,
   tokenRouter.setTokenHighPriority,
-  tokenRouter.addReservedToken
+  tokenRouter.addReservedToken,
+  tokenRouter.listOfAllTokens
 ]

@@ -6,7 +6,8 @@ import {
     processOnToken,
     listOfTokensByActiveOfCurrentDate,
     setTokenHighPriority,
-    addReservedToken
+    addReservedToken,
+    listOfAllTokens
 } from "./tokenMethods"
 
 const tokenRouter = {
@@ -17,7 +18,8 @@ const tokenRouter = {
     getSingleToken,
     listOfTokensByActiveOfCurrentDate,
     setTokenHighPriority,
-    addReservedToken
+    addReservedToken,
+    listOfAllTokens
 }
 
 export default tokenRouter
