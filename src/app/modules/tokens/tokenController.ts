@@ -268,6 +268,17 @@ export const TokenControllerClass = {
       throw Error("token already sent for high priority")
     }
 
+    const name = token.name
+    const CNIC = token.cnic
+
+    await db.token.update({
+      where: { id: token.id },
+      data: {
+        name: "",
+        cnic: "",
+      }
+    })
+
     // const ttoken = await db.token.update({ where: { id: token.id }, data: { isSendRequestForHigh: true } })
 
     const reservedToken = await db.token.findFirst({
@@ -290,6 +301,8 @@ export const TokenControllerClass = {
         id: reservedToken?.id
       },
       data: {
+        name: name,
+        cnic: CNIC,
         status: TokenStatus.HIGH_PRIORITY,
         isResvered: false,
         tokenLogs: {
