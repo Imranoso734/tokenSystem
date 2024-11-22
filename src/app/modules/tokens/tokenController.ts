@@ -203,6 +203,35 @@ export const TokenControllerClass = {
     return tokens
 
   },
+ 
+  /**
+   * Get list of tokens for shop with status that is ACTIVE
+   * and with today date.
+   * @param shopId The ID of the shop to get the tokens for.
+   * @returns The found tokens.
+   */
+  async listOfCompletedTokens(shopId: string) {
+
+    const shop = await db.shop.findUnique({ where: { id: shopId }, })
+    if (!shop) {
+      throw Error("shop not found")
+    }
+
+    const tokens = await db.token.findMany({
+      where: {
+        shopId: shopId,
+        status: TokenStatus.COMPLETE,
+        created_at: Dates.currentDate()
+      },
+      include: {
+        tokenLogs: true
+      }
+    })
+
+
+    return tokens
+
+  },
 
   /**
    * Get list of tokens for shop with status that is ACTIVE
