@@ -220,7 +220,6 @@ export const TokenControllerClass = {
     const tokens = await db.token.findMany({
       where: {
         shopId: shopId,
-        created_at: Dates.currentDate()
       },
       include: {
         tokenLogs: {
